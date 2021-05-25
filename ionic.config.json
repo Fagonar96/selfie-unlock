@@ -1,0 +1,8 @@
+{
+  "name": "Selfie Unlock",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular",
+  "id": "782a8660"
+}

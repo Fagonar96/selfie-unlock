@@ -1,0 +1,6 @@
+{
+	"appId": "io.ionic.starter",
+	"appName": "Selfie Unlock",
+	"webDir": "www",
+	"bundledWebRuntime": false
+}
