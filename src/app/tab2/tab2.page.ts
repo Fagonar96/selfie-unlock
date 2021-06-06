@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 
 import { ActionSheetController } from '@ionic/angular';
+import { send } from 'process';
 import { UserPhoto, PhotoService } from '../services/photo.service';
 
 @Component({
@@ -22,6 +23,13 @@ export class Tab2Page {
     const actionSheet = await this.actionSheetController.create({
       header: 'Photos',
       buttons: [{
+        text: 'Send',
+        icon: 'send',
+        handler:() => {
+          // photo service send picture function
+        }
+
+      },{
         text: 'Delete',
         role: 'destructive',
         icon: 'trash',
@@ -40,6 +48,7 @@ export class Tab2Page {
     await actionSheet.present();
   }
 
+  
   addPhotoToGallery() {
     this.photoService.addNewToGallery();
   }
