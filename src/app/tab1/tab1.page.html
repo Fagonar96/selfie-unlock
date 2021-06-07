@@ -13,6 +13,7 @@
     </ion-toolbar>
   </ion-header>
 
-  <ion-button [routerLink]="['/login']"  vertical="bottom" expand="block" color="danger">Sign Out</ion-button>
+  <ion-button vertical="bottom"  expand="block" color="danger"
+  (click)= "onSubmit()">Sign Out</ion-button>
 
 </ion-content>

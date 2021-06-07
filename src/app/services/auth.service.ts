@@ -23,7 +23,7 @@ export class AuthService {
     .pipe(
       tap(
         (response) => {
-          this._user = new User(response.name, loginData.email, response.token);
+          this._user = new User(response.name, loginData.email, loginData.password, response.token);
 
           // Almacenamiento en el Local Storage
           sessionStorage.setItem('user', JSON.stringify(this._user));

@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { Camera, CameraResultType, CameraSource, Photo } from '@capacitor/camera';
@@ -5,6 +6,8 @@ import { Capacitor } from '@capacitor/core';
 import { Filesystem, Directory } from '@capacitor/filesystem';
 import { Storage } from '@capacitor/storage';
 import { Platform } from '@ionic/angular';
+import { environment } from 'src/environments/environment';
+
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +18,10 @@ export class PhotoService {
   public photos: UserPhoto[] = [];
   private PHOTO_STORAGE: string = 'photos';
 
-  constructor(private platform: Platform) {}
+  // Array which contains each photo from server
+  public server_photos: UserPhoto[] = [];
+
+  constructor(private platform: Platform, private http: HttpClient) {}
 
   public async loadSaved() {
     // Retrieve cached photo array data
@@ -73,6 +79,11 @@ export class PhotoService {
       directory: Directory.Data,
     });
 
+    // Send the new image to the web server
+    console.log("Sending image: " + fileName);
+    console.log(base64Data)
+    const send = await this.sendPicture(fileName, base64Data);
+
     if (this.platform.is('hybrid')) {
       // Display the new image by rewriting the 'file://' path to HTTP
       return {
@@ -108,6 +119,23 @@ export class PhotoService {
     }
   }
 
+  public async getPictures(){
+    return this.http.get<UserPhoto[]>(environment.restapiUrl + '/photo').subscribe((Response)=>{
+      this.photos = Response;
+      // Update photos array cache by overwriting the existing photo array
+      Storage.set({
+        key: this.PHOTO_STORAGE,
+        value: JSON.stringify(this.photos),
+      });
+    })
+  }
+
+  // Send the picture to the web server
+  public async sendPicture(fileName: string, fileData: string){
+    // Http post request to send the picture
+    return this.http.post(environment.restapiUrl + '/photo', {name: fileName, data: fileData})
+  }
+
   // Delete picture by removing it from reference data and the filesystem
   public async deletePicture(photo: UserPhoto, position: number) {
     // Remove this photo from the Photos reference data array
@@ -119,12 +147,19 @@ export class PhotoService {
       value: JSON.stringify(this.photos),
     });
 
-    // delete photo file from filesystem
+    // Delete photo file from filesystem
     const filename = photo.filepath.substr(photo.filepath.lastIndexOf('/') + 1);
+    console.log("Deleting image: " + filename);
     await Filesystem.deleteFile({
       path: filename,
       directory: Directory.Data,
     });
+
+    return this.http.delete(environment.restapiUrl + '/photo/' + filename)
+  }
+
+  public async sendSetting(maxFace: number, knownMaxFace: number) {
+    
   }
   
   convertBlobToBase64 = (blob: Blob) => new Promise((resolve, reject) => {

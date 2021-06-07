@@ -22,14 +22,14 @@ export class Tab2Page {
   public async showActionSheet(photo: UserPhoto, position: number) {
     const actionSheet = await this.actionSheetController.create({
       header: 'Photos',
-      buttons: [{
+      buttons: [/*{
         text: 'Send',
         icon: 'send',
         handler:() => {
           // photo service send picture function
         }
 
-      },{
+      },*/{
         text: 'Delete',
         role: 'destructive',
         icon: 'trash',

@@ -11,17 +11,19 @@
   <form>
     <ion-item lines="full">
       <ion-label position="floating">Email</ion-label>
-      <ion-input type="text" required></ion-input>
+      <ion-input type="text" required 
+      [(ngModel)]="model.email" name="email"></ion-input>
     </ion-item>
 
     <ion-item lines="full">
       <ion-label position="floating">Password</ion-label>
-      <ion-input type="password" required></ion-input>
+      <ion-input type="password" required 
+      [(ngModel)]="model.password" name="password"></ion-input>
     </ion-item>
 
     <ion-row>
       <ion-col>
-        <ion-button [routerLink]="['/tabs']" color="danger" expand="block">Sign In</ion-button>
+        <ion-button [routerLink]="['/tabs']" color="danger" expand="block" (click)="onSubmit()">Sign In</ion-button>
         <ion-button [routerLink]="['/register']" expand="block" color="primary">Register</ion-button>
       </ion-col>
     </ion-row>

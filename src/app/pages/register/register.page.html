@@ -10,28 +10,28 @@
 <ion-content>
   <form>
     <ion-item lines="full">
-      <ion-label position="floating">First name</ion-label>
-      <ion-input type="text" required></ion-input>
-    </ion-item>
-
-    <ion-item lines="full">
-      <ion-label position="floating">Last name</ion-label>
-      <ion-input type="text" required></ion-input>
+      <ion-label position="floating">Name</ion-label>
+      <ion-input type="text" required
+      [(ngModel)]="model.name" name="name"></ion-input>
     </ion-item>
 
     <ion-item lines="full">
       <ion-label position="floating">Email</ion-label>
-      <ion-input type="text" required></ion-input>
+      <ion-input type="text" required
+      [(ngModel)]="model.email" name="email"></ion-input>
     </ion-item>
 
     <ion-item lines="full">
       <ion-label position="floating">Password</ion-label>
-      <ion-input type="password" required></ion-input>
+      <ion-input type="password" required
+      [(ngModel)]="model.password" name="password"></ion-input>
     </ion-item>
 
     <ion-row>
       <ion-col>
-        <ion-button [routerLink]="['/login']" type="submit" color="danger" expand="block">Sign Up</ion-button>
+        <ion-button [routerLink]="['/login']" type="submit" 
+        color="danger" expand="block"
+        (click)="onSubmit()">Sign Up</ion-button>
       </ion-col>
     </ion-row>
   </form>
