@@ -120,7 +120,7 @@ export class PhotoService {
   }
 
   public async getPictures(){
-    return this.http.get<UserPhoto[]>(environment.restapiUrl + '/photo').subscribe((Response)=>{
+    this.http.get<UserPhoto[]>(environment.restapiUrl + '/photo').subscribe((Response)=>{
       this.photos = Response;
       // Update photos array cache by overwriting the existing photo array
       Storage.set({
@@ -158,8 +158,9 @@ export class PhotoService {
     return this.http.delete(environment.restapiUrl + '/photo/' + filename)
   }
 
-  public async sendSetting(maxFace: number, knownMaxFace: number) {
-    
+  public async sendSettings(maxFace: number, knownMaxFace: number) {
+    console.log("Sending settings: " + maxFace + ", " + knownMaxFace)
+    return this.http.post(environment.restapiUrl + '/settings', {maxFaceDist: maxFace, knownMaxFace: knownMaxFace});
   }
   
   convertBlobToBase64 = (blob: Blob) => new Promise((resolve, reject) => {

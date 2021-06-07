@@ -16,17 +16,20 @@
   <form>
     <ion-item lines="full">
       <ion-label position="floating">Face Maximum Distance</ion-label>
-      <ion-input type="number" required></ion-input>
+      <ion-input type="number" required
+      [(ngModel)]="model.maxFaceDistance" name="maxFaceDistance"></ion-input> 
     </ion-item>
 
     <ion-item lines="full">
       <ion-label position="floating">Known Face Maximum Distance</ion-label>
-      <ion-input type="number" required></ion-input>
+      <ion-input type="number" required
+      [(ngModel)]="model.knownMaxFaceDistance" name="knownMaxFaceDistance"></ion-input>
     </ion-item>
 
     <ion-row>
       <ion-col>
-        <ion-button [routerLink]="['/tabs']" color="danger" expand="block">Apply</ion-button>
+        <ion-button color="danger" expand="block"
+        (click)="onSubmit()">Apply</ion-button>
       </ion-col>
     </ion-row>
   </form>
