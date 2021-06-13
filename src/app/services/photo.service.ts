@@ -160,6 +160,7 @@ export class PhotoService {
 
   public async sendSettings(maxFace: number, knownMaxFace: number) {
     console.log("Sending settings: " + maxFace + ", " + knownMaxFace)
+    console.log(environment.restapiUrl + '/settings')
     return this.http.post(environment.restapiUrl + '/settings', {maxFaceDist: maxFace, knownMaxFace: knownMaxFace});
   }
   
