@@ -1,6 +1,9 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/models/user.model';
 import { AuthService } from 'src/app/services/auth.service';
+import { environment } from 'src/environments/environment';
+
 
 @Component({
   selector: 'app-register',
@@ -9,7 +12,7 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class RegisterPage implements OnInit {
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private http: HttpClient) { }
 
   model = new User('', '', '', '')
 
@@ -21,6 +24,12 @@ export class RegisterPage implements OnInit {
     const _password = this.model.password;
     const _register = {email: _email, password: _password, name: _name}
     this.authService.signup(_register);
+  }
+
+  onSubmit2() {
+    this.http.get(environment.restapiUrl + '/user').subscribe((Response)=>{
+      console.log(Response)
+    })
   }
 
   ngOnInit() {

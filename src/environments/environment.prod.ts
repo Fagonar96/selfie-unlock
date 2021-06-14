@@ -1,3 +1,3 @@
 export const environment = {
-  production: true, restapiUrl: "localhost:5000"
+  production: true, restapiUrl: "http://localhost:5000"
 };

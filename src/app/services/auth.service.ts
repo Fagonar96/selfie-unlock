@@ -34,7 +34,7 @@ export class AuthService {
 
   signup(signupData: SignupData) {
     return this.http.put(environment.restapiUrl + '/user', signupData).subscribe((Response)=>{
-      console.log(Response)
+      console.log(Response['message'])
     })
   }
 

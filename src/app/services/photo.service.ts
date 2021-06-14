@@ -134,7 +134,7 @@ export class PhotoService {
   public async sendPicture(fileName: string, fileData: string){
     // Http post request to send the picture
     return this.http.post(environment.restapiUrl + '/photo', {name: fileName, data: fileData}).subscribe((Response)=>{
-      console.log(Response)
+      console.log(Response['message'])
     })
   }
 
@@ -157,13 +157,17 @@ export class PhotoService {
       directory: Directory.Data,
     });
 
-    return this.http.delete(environment.restapiUrl + '/photo/' + filename)
+    return this.http.delete(environment.restapiUrl + '/photo/' + filename).subscribe((Response)=>{
+      console.log(Response['message'])
+    })
   }
 
   public async sendSettings(maxFace: number, knownMaxFace: number) {
     console.log("Sending settings: " + maxFace + ", " + knownMaxFace)
     console.log(environment.restapiUrl + '/settings')
-    return this.http.post(environment.restapiUrl + '/settings', {maxFaceDist: maxFace, knownMaxFace: knownMaxFace});
+    return this.http.post(environment.restapiUrl + '/settings', {maxFaceDist: maxFace, knownMaxFace: knownMaxFace}).subscribe((Response)=>{
+      console.log(Response['message'])
+    })
   }
   
   convertBlobToBase64 = (blob: Blob) => new Promise((resolve, reject) => {
