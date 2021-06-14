@@ -39,7 +39,7 @@ export class PhotoService {
         });
 
         // Web platform only: Load the photo as base64 data
-        photo.webviewPath = `data:image/jpeg;base64,${readFile.data}`;
+        photo.webviewPath = `data:image/png;base64,${readFile.data}`;
       }
     }
   }
@@ -72,7 +72,7 @@ export class PhotoService {
     const base64Data = await this.readAsBase64(cameraPhoto);
 
     // Write the file to the data directory
-    const fileName = new Date().getTime() + '.jpeg';
+    const fileName = new Date().getTime() + '.png';
     const savedFile = await Filesystem.writeFile({
       path: fileName,
       data: base64Data,
