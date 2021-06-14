@@ -133,7 +133,9 @@ export class PhotoService {
   // Send the picture to the web server
   public async sendPicture(fileName: string, fileData: string){
     // Http post request to send the picture
-    return this.http.post(environment.restapiUrl + '/photo', {name: fileName, data: fileData})
+    return this.http.post(environment.restapiUrl + '/photo', {name: fileName, data: fileData}).subscribe((Response)=>{
+      console.log(Response)
+    })
   }
 
   // Delete picture by removing it from reference data and the filesystem
