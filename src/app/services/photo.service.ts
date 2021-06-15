@@ -58,6 +58,7 @@ export class PhotoService {
     // Save the picture and add it to the photo collection
     const savedImageFile = await this.savePicture(capturedPhoto);
     this.photos.unshift(savedImageFile);
+    console.log(this.photos)
 
     // Cache all photo data for future retrieval
     Storage.set({
@@ -80,8 +81,11 @@ export class PhotoService {
     });
 
     // Send the new image to the web server
-    console.log("Sending image: " + fileName + " " + base64Data);
+    //console.log("Sending image: " + fileName + " " + base64Data);
     const send = await this.sendPicture(fileName, base64Data);
+
+    //console.log(cameraPhoto.webPath)
+    //console.log(savedFile.uri)
 
     if (this.platform.is('hybrid')) {
       // Display the new image by rewriting the 'file://' path to HTTP
@@ -120,42 +124,38 @@ export class PhotoService {
 
   // Get all the pictures from rest api
   public async getPictures(){
-    this.http.get<UserPhoto[]>(environment.restapiUrl + '/photo').subscribe((Response)=>{
-      //console.log(Response)
-      //this.photos = Response
+    this.http.get<UserPhoto[]>(environment.restapiUrl + '/photo').subscribe(async Response=>{
+
       console.log("photos: ", this.photos)
       
+      /*
       for(let photo in Response){
         //console.log(Response[photo]['filepath'])
-        const fileName = Response[photo]['filepath']
-        const fileData = Response[photo]['webviewPath']
+        let fileName = Response[photo]['filepath']
+        let fileData = Response[photo]['webviewPath']
 
-        const savedFile = Filesystem.writeFile({
+        let savedFile = await Filesystem.writeFile({
           path: fileName,
           data: fileData,
           directory: Directory.Data,
+        })
+        
+        const readFile = await Filesystem.readFile({
+          path: fileName,
+          directory: Directory.Data,
         });
 
-        const rawData = atob(fileData);
-        const bytes = new Array(rawData.length);
-        for (var x = 0; x < rawData.length; x++) {
-          bytes[x] = rawData.charCodeAt(x);
-        }
-        const arr = new Uint8Array(bytes);
-        const blob = new Blob([arr], {type: 'image/png'});
-        console.log(blob)
-        /*
         const savedImageFile = {
           filepath: fileName,
-          webviewPath: Capacitor.convertFileSrc(savedFile.uri),
+          //webviewPath: Capacitor.convertFileSrc(savedFile.uri)
+          webviewPath: `data:image/png;base64,${readFile.data}`
         }
-        
-        //const savedImageFile = await this.addPicture(fileName, fileData);
+      
         this.photos.unshift(savedImageFile);
-        */
         
       };
-
+      */
+      //console.log(this.photos)
       
       // Update photos array cache by overwriting the existing photo array
       Storage.set({
