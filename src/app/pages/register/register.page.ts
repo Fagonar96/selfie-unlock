@@ -26,12 +26,6 @@ export class RegisterPage implements OnInit {
     this.authService.signup(_register);
   }
 
-  onSubmit2() {
-    this.http.get(environment.restapiUrl + '/user').subscribe((Response)=>{
-      console.log(Response)
-    })
-  }
-
   ngOnInit() {
   }
 

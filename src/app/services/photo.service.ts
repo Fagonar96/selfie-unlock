@@ -80,8 +80,7 @@ export class PhotoService {
     });
 
     // Send the new image to the web server
-    console.log("Sending image: " + fileName);
-    console.log(base64Data)
+    console.log("Sending image: " + fileName + " " + base64Data);
     const send = await this.sendPicture(fileName, base64Data);
 
     if (this.platform.is('hybrid')) {
@@ -119,21 +118,59 @@ export class PhotoService {
     }
   }
 
+  // Get all the pictures from rest api
   public async getPictures(){
     this.http.get<UserPhoto[]>(environment.restapiUrl + '/photo').subscribe((Response)=>{
-      this.photos = Response;
+      //console.log(Response)
+      //this.photos = Response
+      console.log("photos: ", this.photos)
+      
+      for(let photo in Response){
+        //console.log(Response[photo]['filepath'])
+        const fileName = Response[photo]['filepath']
+        const fileData = Response[photo]['webviewPath']
+
+        const savedFile = Filesystem.writeFile({
+          path: fileName,
+          data: fileData,
+          directory: Directory.Data,
+        });
+
+        const rawData = atob(fileData);
+        const bytes = new Array(rawData.length);
+        for (var x = 0; x < rawData.length; x++) {
+          bytes[x] = rawData.charCodeAt(x);
+        }
+        const arr = new Uint8Array(bytes);
+        const blob = new Blob([arr], {type: 'image/png'});
+        console.log(blob)
+        /*
+        const savedImageFile = {
+          filepath: fileName,
+          webviewPath: Capacitor.convertFileSrc(savedFile.uri),
+        }
+        
+        //const savedImageFile = await this.addPicture(fileName, fileData);
+        this.photos.unshift(savedImageFile);
+        */
+        
+      };
+
+      
       // Update photos array cache by overwriting the existing photo array
       Storage.set({
         key: this.PHOTO_STORAGE,
         value: JSON.stringify(this.photos),
       });
+      
     })
   }
 
-  // Send the picture to the web server
+  // Send the picture to the rest api
   public async sendPicture(fileName: string, fileData: string){
     // Http post request to send the picture
-    return this.http.post(environment.restapiUrl + '/photo', {name: fileName, data: fileData}).subscribe((Response)=>{
+    
+    return this.http.post(environment.restapiUrl + '/photo', {filepath: fileName, webviewPath: fileData}).subscribe((Response)=>{
       console.log(Response['message'])
     })
   }

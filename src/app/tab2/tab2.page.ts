@@ -53,4 +53,8 @@ export class Tab2Page {
     this.photoService.addNewToGallery();
   }
 
+  getPhotoGallery(){
+    this.photoService.getPictures()
+  }
+
 }
