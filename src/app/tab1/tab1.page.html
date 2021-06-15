@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Profile
+      Server Photos
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -13,7 +13,17 @@
     </ion-toolbar>
   </ion-header>
 
-  <ion-button vertical="bottom"  expand="block" color="danger"
-  (click)= "onSubmit()">Sign Out</ion-button>
+  <ion-list>
+    <ion-item
+      *ngFor="let photo of photos">
+      <ion-label (click)="deletePhoto(photo)">{{photo.filepath}}</ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ion-fab vertical="bottom" horizontal="center" slot="fixed">
+    <ion-fab-button (click)="getPhotoGallery()">
+      <ion-icon name="refresh-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 
 </ion-content>

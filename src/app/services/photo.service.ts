@@ -123,47 +123,8 @@ export class PhotoService {
   }
 
   // Get all the pictures from rest api
-  public async getPictures(){
-    this.http.get<UserPhoto[]>(environment.restapiUrl + '/photo').subscribe(async Response=>{
-
-      console.log("photos: ", this.photos)
-      
-      /*
-      for(let photo in Response){
-        //console.log(Response[photo]['filepath'])
-        let fileName = Response[photo]['filepath']
-        let fileData = Response[photo]['webviewPath']
-
-        let savedFile = await Filesystem.writeFile({
-          path: fileName,
-          data: fileData,
-          directory: Directory.Data,
-        })
-        
-        const readFile = await Filesystem.readFile({
-          path: fileName,
-          directory: Directory.Data,
-        });
-
-        const savedImageFile = {
-          filepath: fileName,
-          //webviewPath: Capacitor.convertFileSrc(savedFile.uri)
-          webviewPath: `data:image/png;base64,${readFile.data}`
-        }
-      
-        this.photos.unshift(savedImageFile);
-        
-      };
-      */
-      //console.log(this.photos)
-      
-      // Update photos array cache by overwriting the existing photo array
-      Storage.set({
-        key: this.PHOTO_STORAGE,
-        value: JSON.stringify(this.photos),
-      });
-      
-    })
+  public getPictures(){
+    return this.http.get<UserPhoto[]>(environment.restapiUrl + '/photo')
   }
 
   // Send the picture to the rest api
@@ -197,6 +158,10 @@ export class PhotoService {
     return this.http.delete(environment.restapiUrl + '/photo/' + filename).subscribe((Response)=>{
       console.log(Response['message'])
     })
+  }
+
+  public deletePhoto(photo: UserPhoto){
+    return this.http.delete(environment.restapiUrl + '/photo/' + photo.filepath)
   }
 
   public async sendSettings(maxFace: number, knownMaxFace: number) {
